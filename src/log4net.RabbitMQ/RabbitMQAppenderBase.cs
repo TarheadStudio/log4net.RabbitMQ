@@ -241,7 +241,7 @@ namespace log4net.RabbitMQ
             string topic = GetTopic(loggingEvent);
 
             _Model.BasicPublish(this._ExchangeProperties.Name, topic,
-                    true, false, basicProperties,
+                    true, basicProperties,
                     message);
 
         }
@@ -253,7 +253,7 @@ namespace log4net.RabbitMQ
             basicProperties.ContentType = Format(loggingEvent);
             basicProperties.AppId = this.MessageProperties.AppId ?? loggingEvent.LoggerName;
 
-            basicProperties.SetPersistent(this._MessageProperties.Persistent);
+			basicProperties.Persistent = this._MessageProperties.Persistent;
             this.InitMessagePriority(basicProperties, loggingEvent);
 
             basicProperties.Timestamp = new AmqpTimestamp(
